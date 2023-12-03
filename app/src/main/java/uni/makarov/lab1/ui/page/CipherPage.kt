@@ -58,12 +58,17 @@ fun CipherPage(cipher: CipherAlgorithm) {
     var outputText by remember { mutableStateOf(processText(inputText)) }
 
     var pickedDocumentUri by remember { mutableStateOf<Uri?>(null) }
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+
+
+    val loadFileLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         println("selected file URI ${it.data?.data}")
         pickedDocumentUri = it.data?.data
+        //inputText = readDocument(LocalContext.current, pickedDocumentUri)
     }
-    pickedDocumentUri?.let {
-        Text(it.toString())
+
+    val saveFileLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        println("selected file URI ${it.data?.data}")
+        pickedDocumentUri = it.data?.data
     }
 
 
@@ -77,14 +82,19 @@ fun CipherPage(cipher: CipherAlgorithm) {
                 onClick = { val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
                     .apply {
                         addCategory(Intent.CATEGORY_OPENABLE)
-                        type = "application/txt"
+                        type = "text/plain"
                     }
-                    launcher.launch(intent) }
+                    loadFileLauncher.launch(intent) }
             ) {
                 Text("Open File")
             }
             ElevatedButton(
-                onClick = {  }
+                onClick = { val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
+                    .apply {
+                        addCategory(Intent.CATEGORY_OPENABLE)
+                        type = "text/plain"
+                    }
+                    saveFileLauncher.launch(intent) }
             ) {
                 Text("Save File")
             }

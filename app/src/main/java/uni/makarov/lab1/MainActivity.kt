@@ -62,7 +62,7 @@ class MainActivity : ComponentActivity() {
                                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                                 titleContentColor = MaterialTheme.colorScheme.primary
                             ),
-                            title = { Text("Cypher App") },
+                            title = { Text("Cipher App") },
                             actions = {
                                 cipher = cypherDropdownMenu()
                                 IconButton(
